@@ -1,12 +1,11 @@
 export enum ErrorType {
   BaseError = 0,
-  AggregateError = 1,
-  AssertionError = 2,
-  RangeError = 3,
-  ReferenceError = 4,
-  SyntaxError = 5,
-  TypeError = 6,
-  NativeAssertionError = 7
+  EvalError = 1,
+  RangeError = 2,
+  ReferenceError = 3,
+  SyntaxError = 4,
+  TypeError = 5,
+  URIError = 6
 }
 
 export type CustomError = {

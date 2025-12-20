@@ -1,4 +1,4 @@
-const { immediateError, ErrorType } = require('immediate-error')
+const { immediateError, ErrorType } = require('./index')
 const assert = require('node:assert')
 
 describe('immediateError utility', () => {
@@ -16,21 +16,16 @@ describe('immediateError utility', () => {
 
   // Native Error Types
   test.each([
+    ['BaseError', ErrorType.BaseError, Error],
+    ['EvalError', ErrorType.EvalError, EvalError],
     ['RangeError', ErrorType.RangeError, RangeError],
     ['ReferenceError', ErrorType.ReferenceError, ReferenceError],
     ['SyntaxError', ErrorType.SyntaxError, SyntaxError],
     ['TypeError', ErrorType.TypeError, TypeError],
-    ['AggregateError', ErrorType.AggregateError, AggregateError],
+    ['RangeError', ErrorType.URIError, URIError],
   ])('throws %s when specified', (name, type, constructor) => {
     expect(() => immediateError('test message', type)).toThrow(constructor)
   })
-
-  // Assertion Errors
-  test('throws NativeAssertionError (node:assert)', () => {
-    expect(() => immediateError('failed', ErrorType.NativeAssertionError))
-      .toThrow(assert.AssertionError)
-  })
-
   // Custom Error Classes
   test('throws a custom user-defined Error class', () => {
     class MyCustomError extends Error {

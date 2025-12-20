@@ -7,35 +7,34 @@ const three = require("@positive-numbers/three")
 const four = require("@positive-numbers/four")
 const five = require("@positive-numbers/five")
 const six = require("@positive-numbers/six")
-const seven = require("@positive-numbers/seven")
-const { throwop, noop } = require("yanoop")
+const noop = require("yanoop").noop
+const bail = require("bail")
 const { Switch } = require("switch-in-fp")
-const assert = require("assert-fn")
-const nativeAssert = require("node:assert")
 const vm = require("node:vm")
 const construct = require("construct-new")
 const attempt = require("attempt-statement")
+const trueValue = require("true-value")
 
-const $BaseError = require("es-errors")
-const $AssertionError = assert.AssertionError
-const $AggregateError = GetIntrinsic("%AggregateError%")
-const $RangeError = require("es-errors/range")
-const $ReferenceError = require("es-errors/ref")
-const $SyntaxError = require("es-errors/syntax")
-const $TypeError = require("es-errors/type")
-const $NativeAssertionError = nativeAssert.AssertionError
+const $BaseError = require("es-error-intrinsics/Error")
+const $EvalError = require("es-error-intrinsics/EvalError")
+const $RangeError = require("es-error-intrinsics/RangeError")
+const $ReferenceError = require("es-error-intrinsics/ReferenceError")
+const $SyntaxError = require("es-error-intrinsics/SyntaxError")
+const $TypeError = require("es-error-intrinsics/TypeError")
+const $URIError = require("es-error-intrinsics/URIError")
+
+const captureStackTrace = GetIntrinsic("%Error.captureStackTrace%", trueValue())
 
 const default_error = "ERROR!"
 
 const ErrorType = $Object.freeze({
   BaseError: zero,
-  AssertionError: one,
-  AggregateError: two,
-  RangeError: three,
-  ReferenceError: four,
-  SyntaxError: five,
-  TypeError: six,
-  NativeAssertionError: seven
+  EvalError: one,
+  RangeError: two,
+  ReferenceError: three,
+  SyntaxError: four,
+  TypeError: five,
+  URIError: six,
 })
 
 exports.immediateError = function immediateError(message = default_error, errorType = ErrorType.BaseError) {
@@ -45,11 +44,8 @@ exports.immediateError = function immediateError(message = default_error, errorT
     .case(ErrorType.BaseError, function () {
       error = construct({ target: $BaseError, args: [message] })
     })
-    .case(ErrorType.AssertionError, function () {
-      error = construct({ target: $AssertionError, args: [message] })
-    })
-    .case(ErrorType.AggregateError, function () {
-      error = construct({ target: $AggregateError, args: [message] })
+    .case(ErrorType.EvalError, function () {
+      error = construct({ target: $EvalError, args: [message] })
     })
     .case(ErrorType.RangeError, function () {
       error = construct({ target: $RangeError, args: [message] })
@@ -63,25 +59,30 @@ exports.immediateError = function immediateError(message = default_error, errorT
     .case(ErrorType.TypeError, function () {
       error = construct({ target: $TypeError, args: [message] })
     })
-    .case(ErrorType.NativeAssertionError, function () {
-      error = construct({ target: $NativeAssertionError, args: [message] })
+    .case(ErrorType.URIError, function () {
+      error = construct({ target: $URIError, args: [message] })
     })
     .else(function () {
-      attempt(function() {
+      attempt(function () {
         error = construct({ target: errorType, args: [message] })
-      }).rescue(function() {
+      }).rescue(function () {
         error = construct({ target: $BaseError, args: [message] })
       }).else(noop).ensure(noop).end()
     })
     .execute()
 
-  const context = {
-    error,
-    throwop
+  if (captureStackTrace) {
+    captureStackTrace(error, immediateError)
   }
+
+  const context = {
+    error: error,
+    bail: bail
+  }
+
   vm.createContext(context)
 
-  const script = construct({ target: vm.Script, args: [`throwop(error)`, { filename: default_error }] })
+  const script = construct({ target: vm.Script, args: [`bail(error)`, { filename: default_error }] })
 
   script.runInContext(context)
 }
