@@ -1,4 +1,4 @@
-const GetIntrinsic = require("get-intrinsic")
+const GetIntrinsic = require("es-intrinsic-cache")
 const $Object = require("es-object-atoms")
 const zero = require("@positive-numbers/zero")
 const one = require("@positive-numbers/one")
