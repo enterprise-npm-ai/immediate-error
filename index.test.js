@@ -1,5 +1,4 @@
 const { immediateError, ErrorType } = require('./index')
-const assert = require('node:assert')
 
 describe('immediateError utility', () => {
 
