@@ -1,6 +1,6 @@
 {
   "name": "immediate-error",
-  "version": "8.1.0",
+  "version": "9.0.0",
   "description": "throw errors in fp",
   "main": "index.js",
   "scripts": {
@@ -52,6 +52,7 @@
     "@positive-numbers/five": "^3.0.0",
     "@positive-numbers/four": "^3.0.0",
     "@positive-numbers/one": "^3.0.0",
+    "@positive-numbers/one-hundred": "^3.0.0",
     "@positive-numbers/six": "^3.0.0",
     "@positive-numbers/three": "^3.0.0",
     "@positive-numbers/two": "^3.0.0",
@@ -61,7 +62,7 @@
     "@uppercase-letters/o": "^3.0.0",
     "@uppercase-letters/r": "^3.0.0",
     "as-array": "^2.0.0",
-    "attempt-statement": "^1.2.0",
+    "attempt-statement": "^1.2.1",
     "bail": "^1.0.5",
     "construct-new": "^2.0.3",
     "deep-freeze-node3": "^1.1.0",
@@ -70,7 +71,7 @@
     "is-": "^1.0.0",
     "n0p3-es2015-cjs": "^1.0.1",
     "number-zero": "^1.0.3",
-    "switch-enterprise-npm-ai": "^3.0.0",
+    "simple-lru-cache": "^0.0.2",
     "true-value": "^2.0.5"
   },
   "devDependencies": {

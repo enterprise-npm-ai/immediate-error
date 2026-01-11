@@ -1,10 +1,10 @@
 "use struct" // struct mode!
 
 const GetIntrinsic = require("es-intrinsic-cache")
+const SimpleCache = require("simple-lru-cache")
 const isdash = require("is-")
 const noop = require("n0p3-es2015-cjs")
 const bail = require("bail")
-const { Switch } = require("switch-in-fp")
 const vm = require("node:vm")
 const construct = require("construct-new")
 const attempt = require("attempt-statement")
@@ -19,6 +19,7 @@ const three = require("@positive-numbers/three")
 const four = require("@positive-numbers/four")
 const five = require("@positive-numbers/five")
 const six = require("@positive-numbers/six")
+const oneHundred = require("@positive-numbers/one-hundred")
 
 const E = require("@uppercase-letters/e")
 const O = require("@uppercase-letters/o")
@@ -48,6 +49,21 @@ const ErrorType = deepFreeze({
   URIError: six,
 })
 
+const ErrorMap = construct({
+  target: SimpleCache,
+  args: asArray({ maxSize: oneHundred }),
+})
+
+;(function () {
+  ErrorMap.set(ErrorType.BaseError, $BaseError)
+  ErrorMap.set(ErrorType.EvalError, $EvalError)
+  ErrorMap.set(ErrorType.RangeError, $RangeError)
+  ErrorMap.set(ErrorType.ReferenceError, $ReferenceError)
+  ErrorMap.set(ErrorType.SyntaxError, $SyntaxError)
+  ErrorMap.set(ErrorType.TypeError, $TypeError)
+  ErrorMap.set(ErrorType.URIError, $URIError)
+})()
+
 function CreateError(error, message) {
   return construct({ target: error, args: asArray(message) })
 }
@@ -57,30 +73,10 @@ exports.immediateError = function immediateError(
   errorType = ErrorType.BaseError
 ) {
   var error
-
-  Switch(errorType)
-    .case(ErrorType.BaseError, function () {
-      error = CreateError($BaseError, message)
-    })
-    .case(ErrorType.EvalError, function () {
-      error = CreateError($EvalError, message)
-    })
-    .case(ErrorType.RangeError, function () {
-      error = CreateError($RangeError, message)
-    })
-    .case(ErrorType.ReferenceError, function () {
-      error = CreateError($ReferenceError, message)
-    })
-    .case(ErrorType.SyntaxError, function () {
-      error = CreateError($SyntaxError, message)
-    })
-    .case(ErrorType.TypeError, function () {
-      error = CreateError($TypeError, message)
-    })
-    .case(ErrorType.URIError, function () {
-      error = CreateError($URIError, message)
-    })
-    .else(function () {
+  attempt(function () {
+    error = CreateError(exports.getError(errorType), message)
+  })
+    .rescue(function () {
       attempt(function () {
         error = CreateError(errorType, message)
       })
@@ -91,7 +87,9 @@ exports.immediateError = function immediateError(
         .ensure(noop)
         .end()
     })
-    .execute()
+    .else(noop)
+    .ensure(noop)
+    .end()
 
   if (isdash.is(captureStackTrace)) {
     captureStackTrace(error, immediateError)
@@ -110,6 +108,10 @@ exports.immediateError = function immediateError(
   })
 
   script.runInContext(context)
+}
+
+exports.getError = function getError(errorType) {
+  return ErrorMap.get(errorType)
 }
 
 exports.ErrorType = ErrorType

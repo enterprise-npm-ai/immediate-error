@@ -7,11 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [8.1.0]
+### THIS VERSION IS DEPRECATED: Dependency problem
 
 ### Added
 - This changelog
 
 ## [8.0.0] 
+### THIS VERSION IS DEPRECATED: Dependency problem
 
 ### Added
 - "use struct" directive for struct mode
@@ -99,7 +101,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `has-self-equality`, `noop10` dependencies
 
-## [6.1.0] 
+## [6.1.0]
+### THIS VERSION IS DEPRECATED: Versions 5.0.0 through 6.1.0 are deprecated due to an internal Node.js error caused by esm-wallaby. Please upgrade to a newer version.
 
 ### Added
 - `AggregateError` support
@@ -107,6 +110,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated TypeScript definitions
 
 ## [6.0.0] 
+### THIS VERSION IS DEPRECATED: Versions 5.0.0 through 6.1.0 are deprecated due to an internal Node.js error caused by esm-wallaby. Please upgrade to a newer version.
 
 ### Added
 - `AggregateError` to error types
@@ -120,16 +124,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `es-errors` to `^1.3.0`
 
 ## [5.1.1] 
+### THIS VERSION IS DEPRECATED: Versions 5.0.0 through 6.1.0 are deprecated due to an internal Node.js error caused by esm-wallaby. Please upgrade to a newer version.
 
 ### Changed
 - Replaced `cli-color` with `picocolors`
 
 ## [5.1.0] 
+### THIS VERSION IS DEPRECATED: Versions 5.0.0 through 6.1.0 are deprecated due to an internal Node.js error caused by esm-wallaby. Please upgrade to a newer version.
 
 ### Changed
 - Description updated to "Throw errors, better."
 
 ## [5.0.0] 
+### THIS VERSION IS DEPRECATED: Versions 5.0.0 through 6.1.0 are deprecated due to an internal Node.js error caused by esm-wallaby. Please upgrade to a newer version.
 
 ### Added
 - `esm-wallaby` for ESM requiring
