@@ -89,8 +89,12 @@ attempt(() => {
 }).end() // you must end the statement with .end() or it wont run
 ```
 
-### Changelog
-See Changelog in [CHANGELOG.md](https://github.com/enterprise-npm-ai/immediate-error/blob/main/CHANGELOG.md)
+Delayed errors:
+```js
+const { delayedImmediateError, ErrorType } = require("immediate-error")
+
+delayedImmediateError("delayed", ErrorType.BaseError, 1000) // waits 1000 ms (1 second) and then throws error
+```
 
 ## License
 Unlicense
