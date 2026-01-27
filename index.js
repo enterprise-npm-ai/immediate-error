@@ -265,7 +265,7 @@ exports.throwWhatever = function throwWhatever(whateverToThrow) {
   if (whateverToThrow) {
     bail(whateverToThrow)
   } else {
-    throw whateverToThrow // throw
+    just.throw(whateverToThrow) // throw
   }
 }
 
